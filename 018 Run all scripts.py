@@ -1,7 +1,8 @@
 import os
+import time
 
 def run_script(file):
-    print(f'Running {file}')
+    print(f'Running {file} --- {time.asctime()}')
     try: os.system(f'python \"{file}\"')
     except: print(f'Error occured in {file}')
 
