@@ -3,7 +3,7 @@ import time
 
 def run_script(file):
     print(f'Running {file} --- {time.asctime()}')
-    try: os.system(f'python \"{file}\"')
+    try: os.system(f'python3 \"{file}\"')
     except: print(f'Error occured in {file}')
 
 run_script('010 RandomSearch.py')
