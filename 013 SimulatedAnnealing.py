@@ -81,6 +81,10 @@ while 1:
         # Break if no improvement is possible
         if best_fitness > fitness:
             break
+
+        # Export registers to CSV
+        if counter % 100:
+            pd.DataFrame(register).to_csv('results/hillclimb_da1.csv', index=False)
     
     # Check if temperature enables randomization
     elif temperature > random():

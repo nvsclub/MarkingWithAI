@@ -50,7 +50,7 @@ best_fitness = adversary.calculate_heuristic(meval.create_team(proposed_team))
 
 # Defining step related variables
 step = 10
-step_decrease_cycle = 25
+step_decrease_cycle = 125
 counter = 0
 
 # Search for a better solution until:
@@ -82,6 +82,9 @@ while 1:
         else:
             counter = 0
             step = int(step/2)
+
+        # Export registers to CSV
+        pd.DataFrame(register).to_csv('results/hillclimb_da1.csv', index=False)
     
     # If fitness improved, continue searching
     else:        

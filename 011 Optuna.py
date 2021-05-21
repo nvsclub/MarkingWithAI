@@ -46,7 +46,7 @@ global start_time
 start_time = time()
 
 # Define number of runs
-n_runs = 2000
+n_runs = 10000
 
 # Perform study
 do_study(adversary)
