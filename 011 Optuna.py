@@ -49,7 +49,7 @@ start_time = time()
 n_runs = 10000
 
 # Perform study
-do_study(adversary)
+do_study(adversary, n_runs)
 
 # Export registers to CSV
 pd.DataFrame(register).to_csv('results/optuna_da1.csv', index=False)

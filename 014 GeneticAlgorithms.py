@@ -95,16 +95,14 @@ mutation_rate = 0.2
 population = [meval.generate_random_start() for _ in range(population_size)]
 
 # Initializing variables
-best_proposal = population[0]
 best_heuristic = -100
 iterations_without_improving = 0
 start_time = time()
 
 # Run the generations
 for generation in range(limit_of_generations):
-    # Evaluate and select members that survive
+    # Evaluate population
     population_fitnesses = evaluate(population)
-    population = selection(population, population_fitnesses)
     
     # Verify if any member of the population improved the max fitness 
     fitness = max(population_fitnesses)
@@ -117,6 +115,9 @@ for generation in range(limit_of_generations):
     register['fitness'].append(fitness)
     register['cycle_time'].append(time() - start_time)
     start_time = time()
+    
+    # Select members that survive
+    population = selection(population, population_fitnesses)
 
     # Generate new members of the population and mutate
     population = crossover(population)
