@@ -129,4 +129,4 @@ for generation in range(limit_of_generations):
         break
 
 # Export registers to CSV
-pd.DataFrame(register).to_csv('results/genetic_da1.csv', index=False)
+pd.DataFrame(register).to_csv('results/genetic_da2.csv', index=False)

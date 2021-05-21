@@ -84,7 +84,7 @@ while 1:
             step = int(step/2)
 
         # Export registers to CSV
-        pd.DataFrame(register).to_csv('results/hillclimb_da1.csv', index=False)
+        pd.DataFrame(register).to_csv('results/hillclimb_da2.csv', index=False)
     
     # If fitness improved, continue searching
     else:        
@@ -93,4 +93,4 @@ while 1:
     print(counter, end='\r')
 
 # Export registers to CSV
-pd.DataFrame(register).to_csv('results/hillclimb_da1.csv', index=False)
+pd.DataFrame(register).to_csv('results/hillclimb_da2.csv', index=False)
