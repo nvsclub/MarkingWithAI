@@ -84,7 +84,7 @@ while 1:
 
         # Export registers to CSV
         if counter % 100:
-            pd.DataFrame(register).to_csv('results/hillclimb_da1.csv', index=False)
+            pd.DataFrame(register).to_csv('results/simulatedannealing_da1.csv', index=False)
     
     # Check if temperature enables randomization
     elif temperature > random():
