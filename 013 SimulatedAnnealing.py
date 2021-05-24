@@ -51,6 +51,7 @@ def simulatedannealing():
     # Defining step related variables
     step = 10
     step_decrease_cycle = 125
+    max_steps_at_min_temperature = 250
     counter = 0
 
     # Initializing variables
@@ -58,6 +59,7 @@ def simulatedannealing():
     best_fitness = fitness
     probability_of_acceptance = 0
     counter = 0
+    counter_min_temp = 0
     start_time = time()
 
     # Search for a better solution until:
@@ -84,6 +86,11 @@ def simulatedannealing():
         if temperature < minimum_temperature:
             # Break if no improvement is possible
             if best_fitness > fitness:
+                break
+
+            # Break if there are too many steps at minimum temperature
+            counter_min_temp += 1
+            if counter_min_temp > max_steps_at_min_temperature:
                 break
         
         # Check if temperature enables randomization
@@ -132,5 +139,5 @@ adversary = meval.default_adversary_1
 temperature_multiplier = 0.95
 minimum_temperature = 0.001
 
-for _ in range(5):
+for _ in range(3):
     simulatedannealing()

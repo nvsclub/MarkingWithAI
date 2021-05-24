@@ -50,6 +50,7 @@ def hillclimb():
     # Defining step related variables
     step = 10
     step_decrease_cycle = 125
+    max_steps_at_current_step = 250
     counter = 0
 
     # Search for a better solution until:
@@ -82,8 +83,13 @@ def hillclimb():
                 counter = 0
                 step = int(step/2)
         
-        # If fitness improved, continue searching
-        else:        
+        # If fitness improved
+        else:
+            # If the hill climb is stuck at the minimum temperature, break
+            if counter > max_steps_at_current_step:
+                break
+
+            # Else, save the result and continue
             best_fitness = fitness
 
         print(counter, end='\r')
@@ -96,5 +102,5 @@ def hillclimb():
 adversary = meval.default_adversary_1
 
 # Run algorithm multiple times
-for _ in range(10):
+for _ in range(4):
     hillclimb()
