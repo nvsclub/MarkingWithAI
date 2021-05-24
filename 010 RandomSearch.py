@@ -2,7 +2,7 @@ import lib.marking_evaluation as meval
 
 from tqdm import tqdm
 import pandas as pd
-from time import time
+from time import time, asctime
 
 # Define adversary
 adversary = meval.default_adversary_1
@@ -30,4 +30,4 @@ for _ in tqdm(range(n_runs)):
     register['cycle_time'].append(time() - start_time)
     
 # Export registers to CSV
-pd.DataFrame(register).to_csv('results/random_search_da1.csv', index=False)
+pd.DataFrame(register).to_csv(f'results/random_search_da{asctime()}.csv', index=False)

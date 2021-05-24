@@ -1,0 +1,5 @@
+python3 '010 RandomSearch.py'
+python3 '011 Optuna.py'
+python3 '012 HillClimb.py'
+python3 '013 SimulatedAnnealing.py'
+python3 '014 GeneticAlgorithms.py'

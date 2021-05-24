@@ -3,11 +3,11 @@ import lib.marking_evaluation as meval
 import optuna
 optuna.logging.set_verbosity(optuna.logging.ERROR)
 
-from time import time
+from time import time, asctime
 import pandas as pd
 
 # Performs a study using the optuna library
-def do_study(adversary, n_runs=1000):
+def do_study(adversary, sampler, n_runs=1000):
 
     # Defining objective function
     def objective(trial):
@@ -34,7 +34,7 @@ def do_study(adversary, n_runs=1000):
         return fitness
 
     # Define study and perform n_runs
-    study = optuna.create_study(direction='maximize')
+    study = optuna.create_study(sampler=sampler, direction='maximize')
     study.optimize(objective, n_trials=n_runs)
 
 # Define adversary
@@ -48,8 +48,14 @@ start_time = time()
 # Define number of runs
 n_runs = 10000
 
-# Perform study
-do_study(adversary, n_runs)
+# Perform study (CMA-ES)
+do_study(adversary, optuna.samplers.CmaEsSampler(), n_runs=n_runs)
 
 # Export registers to CSV
-pd.DataFrame(register).to_csv('results/optuna_da1.csv', index=False)
+pd.DataFrame(register).to_csv(f'results/optunacmaes_da{asctime()}.csv', index=False)
+
+# Perform study (TPE)
+do_study(adversary, optuna.samplers.TPESampler(), n_runs=n_runs)
+
+# Export registers to CSV
+pd.DataFrame(register).to_csv(f'results/optunatpe_da{asctime()}.csv', index=False)
