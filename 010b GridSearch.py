@@ -11,15 +11,12 @@ adversary = meval.default_adversary_1
 register = {'proposal': [], 'fitness': [], 'cycle_time': []}
 
 # Define number of runs
-n_runs = 25000
+all_solutions = [[[i, j] for i in range(100) for _ in range(10)] for j in range(100)]
 
 # Perform n_runs
-for _ in tqdm(range(n_runs)):
+for proposed_team in tqdm(range(all_solutions)):
     # Starts timer
     start_time = time()
-
-    # Generating a random team
-    proposed_team = meval.generate_random_start()
 
     # Evaluating randomly created team
     fitness = adversary.calculate_heuristic(meval.create_team(proposed_team))
@@ -31,4 +28,4 @@ for _ in tqdm(range(n_runs)):
     
 # Export registers to CSV
 export_time = asctime().replace(':','').replace(' ','')
-pd.DataFrame(register).to_csv(f'results/random_search_da{export_time}.csv', index=False)
+pd.DataFrame(register).to_csv(f'results/gridsearch_da{export_time}.csv', index=False)

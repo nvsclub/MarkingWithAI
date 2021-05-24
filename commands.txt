@@ -1,4 +1,5 @@
-python3 '010 RandomSearch.py'
+python3 '010a RandomSearch.py'
+python3 '010b GridSearch.py'
 python3 '011 Optuna.py'
 python3 '012 HillClimb.py'
 python3 '013 SimulatedAnnealing.py'
