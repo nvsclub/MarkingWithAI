@@ -119,7 +119,8 @@ def geneticalgorithm():
             break
 
     # Export registers to CSV
-    pd.DataFrame(register).to_csv(f'results/genetic_da{asctime()}.csv', index=False)
+    export_time = asctime().replace(':','').replace(' ','')
+    pd.DataFrame(register).to_csv(f'results/genetic_da{export_time}.csv', index=False)
 
 # Define adversary
 adversary = meval.default_adversary_1

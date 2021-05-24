@@ -52,10 +52,12 @@ n_runs = 10000
 do_study(adversary, optuna.samplers.CmaEsSampler(), n_runs=n_runs)
 
 # Export registers to CSV
-pd.DataFrame(register).to_csv(f'results/optunacmaes_da{asctime()}.csv', index=False)
+export_time = asctime().replace(':','').replace(' ','')
+pd.DataFrame(register).to_csv(f'results/optunacmaes_da{export_time}.csv', index=False)
 
 # Perform study (TPE)
 do_study(adversary, optuna.samplers.TPESampler(), n_runs=n_runs)
 
 # Export registers to CSV
-pd.DataFrame(register).to_csv(f'results/optunatpe_da{asctime()}.csv', index=False)
+export_time = asctime().replace(':','').replace(' ','')
+pd.DataFrame(register).to_csv(f'results/optunatpe_da{export_time}.csv', index=False)

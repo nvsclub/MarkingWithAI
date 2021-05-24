@@ -30,4 +30,5 @@ for _ in tqdm(range(n_runs)):
     register['cycle_time'].append(time() - start_time)
     
 # Export registers to CSV
-pd.DataFrame(register).to_csv(f'results/random_search_da{asctime()}.csv', index=False)
+export_time = asctime().replace(':','').replace(' ','')
+pd.DataFrame(register).to_csv(f'results/random_search_da{export_time}.csv', index=False)

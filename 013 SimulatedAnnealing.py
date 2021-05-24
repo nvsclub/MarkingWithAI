@@ -50,7 +50,7 @@ def simulatedannealing():
 
     # Defining step related variables
     step = 10
-    step_decrease_cycle = 25
+    step_decrease_cycle = 125
     counter = 0
 
     # Initializing variables
@@ -85,10 +85,6 @@ def simulatedannealing():
             # Break if no improvement is possible
             if best_fitness > fitness:
                 break
-
-            # Export registers to CSV
-            if counter % 100:
-                pd.DataFrame(register).to_csv(f'results/simulatedannealing_da{asctime()}.csv', index=False)
         
         # Check if temperature enables randomization
         elif temperature > random():
@@ -126,7 +122,8 @@ def simulatedannealing():
         print(counter, end='\r')
         
     # Export registers to CSV
-    pd.DataFrame(register).to_csv(f'results/simulatedannealing_da{asctime()}.csv', index=False)
+    export_time = asctime().replace(':','').replace(' ','')
+    pd.DataFrame(register).to_csv(f'results/simulatedannealing_da{export_time}.csv', index=False)
 
 # Define adversary
 adversary = meval.default_adversary_1
