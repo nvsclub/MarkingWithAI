@@ -3,6 +3,7 @@ import copy
 from random import random
 
 import pandas as pd
+import numpy as np
 from time import time, asctime
 
 # Lists all the sucessors of a team proposal
@@ -30,7 +31,7 @@ def find_best(adversary, successors):
     # Calculating the fitness for all successors
     for successor in successors[1:]:
         successor_heuristic = adversary.calculate_heuristic(meval.create_team(successor))
-        
+
         # If sucessor is the best, save the result 
         if successor_heuristic > best_heuristic:
             best = successor
@@ -100,7 +101,7 @@ def simulatedannealing():
             random_proposal_heuristic = adversary.calculate_heuristic(meval.create_team(random_proposal))
             
             # Calculate probability of acceptance (note: sigmoid not good)
-            probability_of_acceptance = 10 ** ((random_proposal_heuristic - fitness)) * temperature
+            probability_of_acceptance = ((np.arctan((random_proposal_heuristic - fitness)*100) + np.pi/2) / np.pi) * temperature
             
             # If proposal is accepted, update new proposal and reset step
             if probability_of_acceptance > random():
@@ -109,7 +110,7 @@ def simulatedannealing():
                 step = 10
 
         # If solution cannot improved, decrease step, else generate a new random point
-        elif best_fitness > fitness:
+        elif best_fitness >= fitness:
             # If step is already one, end optimization
             if step == 1:
                 proposed_team = meval.generate_random_start()
@@ -136,8 +137,8 @@ def simulatedannealing():
 adversary = meval.default_adversary_1
 
 # Defining parameters for the algorithm
-temperature_multiplier = 0.95
-minimum_temperature = 0.001
+temperature_multiplier = 0.96
+minimum_temperature = 0.01
 
-for _ in range(3):
+for _ in range(4):
     simulatedannealing()

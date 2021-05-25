@@ -43,7 +43,7 @@ def crossover(population, population_fitnesses):
     # Fill the population to its size
     while len(population) < population_size:
         # Randomly select 2 parents, weights are fitnesses
-        parents = choices(population=population, weights=population_fitnesses, k=2)
+        parents = choices(population=population, weights=[np.exp(fitness) for fitness in population_fitnesses], k=2)
 
         # Create the new individual as a copy of the first parent
         individual = copy.deepcopy(parents[0])
@@ -55,6 +55,9 @@ def crossover(population, population_fitnesses):
         for player in crossover_players:
             individual[player] = parents[1][player]
 
+        # Add mutations to the individual
+        individual = mutation(individual)
+
         # Add individual to the population
         population.append(individual)
         population_fitnesses.append(0) # Keep size consistent
@@ -63,19 +66,17 @@ def crossover(population, population_fitnesses):
     return population
 
 # Mutate members of the population
-def mutation(population):
-    # Mutate all individuals in the population
-    for individual in population:
-        # Randomly generate all players to be mutated
-        mutated_players = [randint(0, 9) for i in range(randint(0, 9))]
+def mutation(individual):
+    # Randomly generate all players to be mutated
+    mutated_players = [randint(0, 9) for i in range(randint(0, 9))]
 
-        # Actually mutate the players by adding a random player to a position
-        for player in mutated_players:
-            if random() < mutation_rate:
-                individual[player] = [randint(0, 100), randint(0, 100)]
+    # Actually mutate the players by adding a random player to a position
+    for player in mutated_players:
+        if random() < mutation_rate:
+            individual[player] = [randint(0, 100), randint(0, 100)]
 
     # Return mutated population
-    return population
+    return individual
 
 # Genetic algorithm
 def geneticalgorithm():
@@ -111,7 +112,6 @@ def geneticalgorithm():
         population, population_fitnesses = selection(population, population_fitnesses)
         # Generate new members of the population and mutate
         population = crossover(population, population_fitnesses)
-        population = mutation(population)
 
         # Increase counter
         iterations_without_improving += 1
@@ -128,8 +128,8 @@ adversary = meval.default_adversary_1
 # Defining GA parameters
 population_size = 100
 fitness_limit = 10
-limit_of_generations = 500
-no_stable_generations = 25
+limit_of_generations = 300
+no_stable_generations = 10
 elitist_rate = 0.05
 survival_rate = 0.7
 mutation_rate = 0.2

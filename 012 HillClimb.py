@@ -73,7 +73,7 @@ def hillclimb():
         register['cycle_time'].append(time() - start_time)
 
         # If fitness did not improve
-        if fitness < best_fitness:
+        if fitness <= best_fitness:
             # If step is already one, end optimization
             if step == 1:
                 break
@@ -102,5 +102,5 @@ def hillclimb():
 adversary = meval.default_adversary_1
 
 # Run algorithm multiple times
-for _ in range(4):
+for _ in range(5):
     hillclimb()
