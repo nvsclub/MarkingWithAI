@@ -24,7 +24,7 @@ def list_successors(current_proposal, step):
 def calculate_sucessor_fitnesses(adversary, successors):
     # Calculating the fitness for all successors
     successor_fitnesses = []
-    for successor in successors[1:]:
+    for successor in successors:
         successor_fitnesses.append(adversary.calculate_heuristic(meval.create_team(successor)))
 
     # Returns list with the fitness of all successors
@@ -73,6 +73,7 @@ def hillclimb():
         # Halve step every *step_decrease_cycle* iterations
         internal_counter += 1
         if internal_counter % step_decrease_cycle == 0:
+            internal_counter = 0
             step = int(step/2)
 
         # Find the best sucessor
@@ -110,6 +111,8 @@ def hillclimb():
     # Export registers to CSV
     export_time = asctime().replace(':','').replace(' ','')
     pd.DataFrame(register).to_csv(f'results/hillclimb_da{export_time}.csv', index=False)
+
+    print(counter)
 
 # Define adversary
 adversary = meval.default_adversary_1

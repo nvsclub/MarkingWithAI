@@ -26,7 +26,7 @@ def list_successors(current_proposal):
 def calculate_sucessor_fitnesses(adversary, successors):
     # Calculating the fitness for all successors
     successor_fitnesses = []
-    for successor in successors[1:]:
+    for successor in successors:
         successor_fitnesses.append(adversary.calculate_heuristic(meval.create_team(successor)))
 
     # Returns list with the fitness of all successors
