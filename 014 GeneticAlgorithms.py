@@ -81,7 +81,7 @@ def mutation(individual, current_mutation_rate):
 # Genetic algorithm
 def geneticalgorithm():
     # Create register to save information about the run
-    register = {'proposal': [], 'fitness': [], 'cycle_time': []}
+    register = {'iteration': [], 'proposal': [], 'fitness': [], 'cycle_time': []}
 
     # Initializing population
     population = [meval.generate_random_start() for _ in range(population_size)]
@@ -92,7 +92,7 @@ def geneticalgorithm():
     start_time = time()
 
     # Run the generations
-    for _ in range(limit_of_generations):
+    for i in range(limit_of_generations):
         # Evaluate population
         population_fitnesses = evaluate(population)
 
@@ -103,9 +103,11 @@ def geneticalgorithm():
             iterations_without_improving = 0
 
         # Save results for post-hoc analysis
-        register['proposal'].append(population[population_fitnesses.index(fitness)])
-        register['fitness'].append(fitness)
-        register['cycle_time'].append(time() - start_time)
+        for individual, individual_fitness in zip(population, population_fitnesses):
+            register['iteration'].append(i)
+            register['proposal'].append(individual)
+            register['fitness'].append(individual_fitness)
+            register['cycle_time'].append(time() - start_time)
         start_time = time()
         
         # Select members that survive

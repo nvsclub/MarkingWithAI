@@ -20,28 +20,36 @@ def list_successors(current_proposal, step):
     # Returns a list with all the successors of the team proposal
     return successors
 
+# Calculate sucessor fitness
+def calculate_sucessor_fitnesses(adversary, successors):
+    # Calculating the fitness for all successors
+    successor_fitnesses = []
+    for successor in successors[1:]:
+        successor_fitnesses.append(adversary.calculate_heuristic(meval.create_team(successor)))
+
+    # Returns list with the fitness of all successors
+    return successor_fitnesses
+
 # Finds the best proposal from a list
-def find_best(adversary, successors):
+def find_best(successors, successor_fitnesses):
     # Assuming the first "best" is the first element of the list
     best = successors[0]
-    best_heuristic = adversary.calculate_heuristic(meval.create_team(best))
+    best_fitness = successor_fitnesses[0]
 
     # Calculating the fitness for all successors
-    for successor in successors[1:]:
-        successor_heuristic = adversary.calculate_heuristic(meval.create_team(successor))
-        
+    for successor, fitness in zip(successors[1:], successor_fitnesses[1:]):
         # If sucessor is the best, save the result 
-        if successor_heuristic > best_heuristic:
+        if fitness > best_fitness:
             best = successor
-            best_heuristic = successor_heuristic
+            best_fitness = fitness
     
     # Returns the best proposal and the heuristic
-    return best, best_heuristic
+    return best, best_fitness
 
 # Hill climb algorithm
 def hillclimb():
     # Create register to save information about the run
-    register = {'proposal': [], 'fitness': [], 'cycle_time': []}
+    register = {'iteration': [], 'proposal': [], 'fitness': [], 'cycle_time': []}
 
     # Starting from a random position
     proposed_team = meval.generate_random_start()
@@ -52,25 +60,25 @@ def hillclimb():
     step_decrease_cycle = 125
     max_steps_at_current_step = 250
     counter = 0
+    internal_counter = 0
 
     # Search for a better solution until:
     # No better solution can be found and step cannot be lowered
     while 1:
+        counter += 1
+        
+        # Reset timer
         start_time = time()
         
         # Halve step every *step_decrease_cycle* iterations
-        counter += 1
-        if counter % step_decrease_cycle == 0:
+        internal_counter += 1
+        if internal_counter % step_decrease_cycle == 0:
             step = int(step/2)
 
         # Find the best sucessor
         successors = list_successors(proposed_team, step)
-        proposed_team, fitness = find_best(adversary, successors)
-
-        # Save results for post-hoc analysis
-        register['proposal'].append(proposed_team)
-        register['fitness'].append(fitness)
-        register['cycle_time'].append(time() - start_time)
+        successor_fitnesses = calculate_sucessor_fitnesses(adversary, successors)
+        proposed_team, fitness = find_best(successors, successor_fitnesses)
 
         # If fitness did not improve
         if fitness <= best_fitness:
@@ -80,19 +88,24 @@ def hillclimb():
             
             # If we can decrease the step, do it before ending
             else:
-                counter = 0
+                internal_counter = 0
                 step = int(step/2)
         
         # If fitness improved
         else:
             # If the hill climb is stuck at the minimum temperature, break
-            if counter > max_steps_at_current_step:
+            if internal_counter > max_steps_at_current_step:
                 break
 
             # Else, save the result and continue
             best_fitness = fitness
 
-        print(counter, end='\r')
+        # Save results for post-hoc analysis
+        for successor, successor_fitness in zip(successors, successor_fitnesses):
+            register['iteration'].append(counter)
+            register['proposal'].append(successor)
+            register['fitness'].append(successor_fitness)
+            register['cycle_time'].append(time() - start_time)
 
     # Export registers to CSV
     export_time = asctime().replace(':','').replace(' ','')
