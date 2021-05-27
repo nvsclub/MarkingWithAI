@@ -17,7 +17,7 @@ def evaluate(population):
     return population_fitnesses
 
 # Select which members go through to the next round
-def selection(population, population_fitnesses):
+def selection(population, population_fitnesses, current_survival_rate=0.7):
     # Calculate which members survive automatically
     survival_guaranteed_above = np.quantile(population_fitnesses, 1 - elitist_rate)
 
@@ -26,7 +26,7 @@ def selection(population, population_fitnesses):
     i = 0
     for fitness in population_fitnesses:
         if fitness < survival_guaranteed_above:
-            if survival_rate < random():
+            if current_survival_rate < random():
                 unfit_individuals.append(i)
         i+=1
 
@@ -39,7 +39,7 @@ def selection(population, population_fitnesses):
     return population, population_fitnesses
 
 # Crossover the population to generate new individuals
-def crossover(population, population_fitnesses):
+def crossover(population, population_fitnesses, current_mutation_rate=0.2):
     # Fill the population to its size
     while len(population) < population_size:
         # Randomly select 2 parents, weights are fitnesses
@@ -56,7 +56,7 @@ def crossover(population, population_fitnesses):
             individual[player] = parents[1][player]
 
         # Add mutations to the individual
-        individual = mutation(individual)
+        individual = mutation(individual, current_mutation_rate)
 
         # Add individual to the population
         population.append(individual)
@@ -66,13 +66,13 @@ def crossover(population, population_fitnesses):
     return population
 
 # Mutate members of the population
-def mutation(individual):
+def mutation(individual, current_mutation_rate):
     # Randomly generate all players to be mutated
-    mutated_players = [randint(0, 9) for i in range(randint(0, 9))]
+    mutated_players = [randint(0, 9) for _ in range(randint(0, 10))]
 
     # Actually mutate the players by adding a random player to a position
     for player in mutated_players:
-        if random() < mutation_rate:
+        if random() < current_mutation_rate:
             individual[player] = [randint(0, 100), randint(0, 100)]
 
     # Return mutated population
@@ -109,9 +109,11 @@ def geneticalgorithm():
         start_time = time()
         
         # Select members that survive
-        population, population_fitnesses = selection(population, population_fitnesses)
+        population, population_fitnesses = selection(population, population_fitnesses, 
+            current_survival_rate=default_survival_rate / np.exp(iterations_without_improving/no_stable_generations))
         # Generate new members of the population and mutate
-        population = crossover(population, population_fitnesses)
+        population = crossover(population, population_fitnesses,
+            current_mutation_rate=default_mutation_rate * np.exp(iterations_without_improving/no_stable_generations))
 
         # Increase counter
         iterations_without_improving += 1
@@ -129,10 +131,10 @@ adversary = meval.default_adversary_1
 population_size = 100
 fitness_limit = 10
 limit_of_generations = 300
-no_stable_generations = 10
+no_stable_generations = 20
 elitist_rate = 0.05
-survival_rate = 0.7
-mutation_rate = 0.2
+default_survival_rate = 0.7
+default_mutation_rate = 0.2
 
 for _ in range(5):
     geneticalgorithm()

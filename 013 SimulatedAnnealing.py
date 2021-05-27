@@ -86,7 +86,7 @@ def simulatedannealing():
         # Check for end clauses
         if temperature < minimum_temperature:
             # Break if no improvement is possible
-            if best_fitness > fitness:
+            if best_fitness >= fitness:
                 break
 
             # Break if there are too many steps at minimum temperature
@@ -108,9 +108,10 @@ def simulatedannealing():
                 proposed_team = random_proposal
                 fitness = random_proposal_heuristic
                 step = 10
+            continue
 
         # If solution cannot improved, decrease step, else generate a new random point
-        elif best_fitness >= fitness:
+        if best_fitness >= fitness:
             # If step is already one, end optimization
             if step == 1:
                 proposed_team = meval.generate_random_start()
@@ -140,5 +141,5 @@ adversary = meval.default_adversary_1
 temperature_multiplier = 0.96
 minimum_temperature = 0.01
 
-for _ in range(4):
+for _ in range(3):
     simulatedannealing()
