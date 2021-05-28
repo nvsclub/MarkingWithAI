@@ -55,6 +55,10 @@ do_study(adversary, optuna.samplers.CmaEsSampler(), n_runs=n_runs)
 export_time = asctime().replace(':','').replace(' ','')
 pd.DataFrame(register).to_csv(f'results/optunacmaes_da{export_time}.csv', index=False)
 
+# Reset register
+register = {'proposal': [], 'fitness': [], 'cycle_time': []}
+start_time = time()
+
 # Perform study (TPE)
 do_study(adversary, optuna.samplers.TPESampler(), n_runs=n_runs)
 

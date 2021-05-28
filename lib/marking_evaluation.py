@@ -189,11 +189,23 @@ class Team:
         # Dividing by the pitch control of a 4-4-2 vs 4-4-2
         return pred.sum() / 4463
 
-    def plot_result(self, proposed_team, save_fig_dir=''):
+    def plot_team(self, dpi=120):
+        draw.pitch(dpi = dpi)
+        attacking_team = [(player.x, player.y, 0) for player in self.players]
+        for i, player in enumerate(attacking_team):
+            plt.scatter(player[0], player[1], s=75, color='blue', edgecolors='navy', linewidths=1,  zorder=10)
+            plt.text(player[0], player[1], i, zorder=11, fontsize='xx-small', color='white', ha='center', va='center')
+
+        plt.scatter(attacking_team[0][0]+1, attacking_team[0][1], s=48, color='black',  zorder=11)
+        plt.scatter(attacking_team[0][0]+1, attacking_team[0][1], s=48, marker='*', color='white',  zorder=11)
+        plt.scatter(attacking_team[0][0]+1, attacking_team[0][1], s=32, marker='+', color='black',  zorder=11)
+
+
+    def plot_result(self, proposed_team, save_fig_dir='', dpi=120):
         attacking_team = [(player.x, player.y, 0) for player in self.players]
         defensive_team = [(player.x, player.y, 1) for player in proposed_team.players]
         
-        draw.pitch(dpi = 120)
+        draw.pitch(dpi = dpi)
         # Draw initial state
         for i, player in enumerate(attacking_team):
             plt.scatter(player[0], player[1], s=75, color='blue', edgecolors='navy', linewidths=1,  zorder=10)

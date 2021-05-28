@@ -12,7 +12,7 @@ adversary = meval.default_adversary_1
 register = {'proposal': [], 'fitness': [], 'cycle_time': []}
 
 # Define number of runs
-n_runs = 25000
+n_runs = 5000
 
 # Perform n_runs
 for _ in tqdm(range(n_runs)):
