@@ -94,12 +94,17 @@ class Team:
         if origin:
            self.origin_player = player
    
+    def calculate_random_player_limits(self):
+        xxs = [player.x for player in self.players]
+        self.x_min = max(0, min(xxs) - 5)
+        self.x_max = min(100, max(xxs) + 5)
+    
     # mad -> maximum allowed distance
-    def initialize_heuristic(self, w1=1, w2=1, w3=1, w4=1, mad=5):
-        self.w1 = w1
-        self.w2 = w2
-        self.w3 = w3
-        self.w4 = w4
+    def initialize_heuristic(self, weights={'w1':1, 'w2':1, 'w3':1, 'w4':1}, mad=5):
+        self.w1 = weights['w1']
+        self.w2 = weights['w2']
+        self.w3 = weights['w3']
+        self.w4 = weights['w4']
         self.mad = mad
 
     # proposed_team = instance of team with players
@@ -168,7 +173,13 @@ class Team:
             distances = []
             for proposed_team_player in proposed_team.players:
                 distances.append(distance(player, proposed_team_player))
-            total_marking_distance += min(distances)
+            min_distances = min(distances)
+            total_marking_distance += min_distances
+
+            # If distance is too close, remove
+            if min_distances < 1:
+                total_marking_distance += 2
+
 
         # Dividing by the distance of a 4-4-2 vs 4-4-2
         ## OFF: (10, 50),(30, 20),(30, 40),(30, 60),(30, 80),(50, 20),(50, 40),(50, 60),(50, 80),(70, 40),(70, 60)
@@ -257,12 +268,14 @@ class Team:
         return
 
         
-def create_adversary(opposing_team):
+def create_adversary(opposing_team, weights={'w1':1, 'w2':1, 'w3':1, 'w4':1}):
     adversary = Team()
-    adversary.initialize_heuristic(w1=1, w2=1, w3=1, w4=1, mad=5)
+    adversary.initialize_heuristic(weights=weights, mad=5)
     adversary.add_player(opposing_team[0][0], opposing_team[0][1], True)
     for player in opposing_team[1:]:
         adversary.add_player(player[0], player[1])
+    adversary.calculate_random_player_limits()
+
     return adversary
 
 def create_team(team_coordinates):
@@ -271,9 +284,9 @@ def create_team(team_coordinates):
         team.add_player(player[0], player[1]) 
     return team
 
-def generate_random_start():
+def generate_random_start(x_min=16, x_max=100, y_min=0, y_max=100):
     # 16 to avoid starting inside the box
-    return [[randint(16, 100), randint(0, 100)] for _ in range(10)]
+    return [[randint(x_min, x_max), randint(y_min, y_max)] for _ in range(10)]
 
 def plot_proposed_team(adversary, current_proposal, save_fig_dir=''):
     proposed_team = create_team(current_proposal)

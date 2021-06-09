@@ -8,28 +8,30 @@ from time import time, asctime
 # Define adversary
 adversary = meval.default_adversary_1
 
-# Create register to save information about the run
-register = {'proposal': [], 'fitness': [], 'cycle_time': []}
-
 # Define number of runs
-n_runs = 5000
+n_runs = 30000
 
-# Perform n_runs
-for _ in tqdm(range(n_runs)):
-    # Starts timer
-    start_time = time()
+# Run algorithm multiple times
+for _ in tqdm(range(20)):
+    # Create register to save information about the run
+    register = {'proposal': [], 'fitness': [], 'cycle_time': []}
 
-    # Generating a random team
-    proposed_team = meval.generate_random_start()
+    # Perform n_runs
+    for _ in range(n_runs):
+        # Starts timer
+        start_time = time()
 
-    # Evaluating randomly created team
-    fitness = adversary.calculate_heuristic(meval.create_team(proposed_team))
+        # Generating a random team
+        proposed_team = meval.generate_random_start(adversary.x_min, adversary.x_max)
 
-    # Save results for post-hoc analysis
-    register['proposal'].append(proposed_team)
-    register['fitness'].append(fitness)
-    register['cycle_time'].append(time() - start_time)
+        # Evaluating randomly created team
+        fitness = adversary.calculate_heuristic(meval.create_team(proposed_team))
 
-# Export registers to CSV
-export_time = asctime().replace(':','').replace(' ','')
-pd.DataFrame(register).to_csv(f'results/random_search_da{export_time}.csv', index=False)
+        # Save results for post-hoc analysis
+        register['proposal'].append(proposed_team)
+        register['fitness'].append(fitness)
+        register['cycle_time'].append(time() - start_time)
+
+    # Export registers to CSV
+    export_time = asctime().replace(':','').replace(' ','')
+    pd.DataFrame(register).to_csv(f'results/random_search_da{export_time}.csv', index=False)

@@ -4,6 +4,7 @@ from random import random
 
 import pandas as pd
 import numpy as np
+from tqdm import tqdm
 from time import time, asctime
 
 # Lists all the sucessors of a team proposal
@@ -54,7 +55,7 @@ def simulatedannealing():
     register = {'iteration': [], 'proposal': [], 'fitness': [], 'cycle_time': [], 'temperature': []}
 
     # Starting from a random position
-    proposed_team = meval.generate_random_start()
+    proposed_team = meval.generate_random_start(adversary.x_min, adversary.x_max)
     fitness = adversary.calculate_heuristic(meval.create_team(proposed_team))
 
     # Defining step related variables
@@ -107,7 +108,7 @@ def simulatedannealing():
         # Check if temperature enables randomization
         elif temperature > random():
             # Generate and evaluate random proposal
-            random_proposal = meval.generate_random_start()
+            random_proposal = meval.generate_random_start(adversary.x_min, adversary.x_max)
             random_proposal_heuristic = adversary.calculate_heuristic(meval.create_team(random_proposal))
             
             # Calculate probability of acceptance (note: sigmoid not good)
@@ -124,7 +125,7 @@ def simulatedannealing():
         if best_fitness >= fitness:
             # If step is already one, end optimization
             if step == 1:
-                proposed_team = meval.generate_random_start()
+                proposed_team = meval.generate_random_start(adversary.x_min, adversary.x_max)
             
             # If we can decrease the step, do it before ending
             else:
@@ -154,5 +155,5 @@ adversary = meval.default_adversary_1
 temperature_multiplier = 0.96
 minimum_temperature = 0.01
 
-for _ in range(3):
+for _ in tqdm(range(20)):
     simulatedannealing()

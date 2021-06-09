@@ -4,6 +4,7 @@ import optuna
 optuna.logging.set_verbosity(optuna.logging.ERROR)
 
 from time import time, asctime
+from tqdm import tqdm
 import pandas as pd
 
 # Performs a study using the optuna library
@@ -17,7 +18,7 @@ def do_study(adversary, sampler, n_runs=1000):
         # Organize all optuna suggestions
         proposed_team = []
         for i in range(10):
-            proposed_team.append([trial.suggest_uniform('x'+str(i), 0, 100), trial.suggest_uniform('y'+str(i), 0, 100)])
+            proposed_team.append([trial.suggest_int('x'+str(i), 0, 100), trial.suggest_uniform('y'+str(i), 0, 100)])
 
         # Calculating fitness        
         fitness = adversary.calculate_heuristic(meval.create_team(proposed_team))
@@ -40,28 +41,33 @@ def do_study(adversary, sampler, n_runs=1000):
 # Define adversary
 adversary = meval.default_adversary_1
 
-# Create register to save information about the run
-register = {'proposal': [], 'fitness': [], 'cycle_time': []}
+# Initialize global timer
 global start_time
 start_time = time()
 
 # Define number of runs
-n_runs = 10000
+n_runs = 5000
 
-# Perform study (CMA-ES)
-do_study(adversary, optuna.samplers.CmaEsSampler(), n_runs=n_runs)
+# Run algorithm multiple times
+for _ in tqdm(range(20)):
+    # Create register to save information about the run
+    register = {'proposal': [], 'fitness': [], 'cycle_time': []}
+    start_time = time()
 
-# Export registers to CSV
-export_time = asctime().replace(':','').replace(' ','')
-pd.DataFrame(register).to_csv(f'results/optunacmaes_da{export_time}.csv', index=False)
+    # Perform study (CMA-ES)
+    do_study(adversary, optuna.samplers.CmaEsSampler(), n_runs=n_runs)
 
-# Reset register
-register = {'proposal': [], 'fitness': [], 'cycle_time': []}
-start_time = time()
+    # Export registers to CSV
+    export_time = asctime().replace(':','').replace(' ','')
+    pd.DataFrame(register).to_csv(f'results/optunacmaes_da{export_time}.csv', index=False)
 
-# Perform study (TPE)
-do_study(adversary, optuna.samplers.TPESampler(), n_runs=n_runs)
+    # Reset register
+    register = {'proposal': [], 'fitness': [], 'cycle_time': []}
+    start_time = time()
 
-# Export registers to CSV
-export_time = asctime().replace(':','').replace(' ','')
-pd.DataFrame(register).to_csv(f'results/optunatpe_da{export_time}.csv', index=False)
+    # Perform study (TPE)
+    do_study(adversary, optuna.samplers.TPESampler(), n_runs=n_runs)
+
+    # Export registers to CSV
+    export_time = asctime().replace(':','').replace(' ','')
+    pd.DataFrame(register).to_csv(f'results/optunatpe_da{export_time}.csv', index=False)

@@ -4,6 +4,7 @@ import copy
 from random import randint, random, choices
 
 from time import time, asctime
+from tqdm import tqdm
 import pandas as pd
 
 # Evaluate all population individuals
@@ -73,7 +74,7 @@ def mutation(individual, current_mutation_rate):
     # Actually mutate the players by adding a random player to a position
     for player in mutated_players:
         if random() < current_mutation_rate:
-            individual[player] = [randint(0, 100), randint(0, 100)]
+            individual[player] = [randint(adversary.x_min, adversary.x_max), randint(0, 100)]
 
     # Return mutated population
     return individual
@@ -84,7 +85,7 @@ def geneticalgorithm():
     register = {'iteration': [], 'proposal': [], 'fitness': [], 'cycle_time': []}
 
     # Initializing population
-    population = [meval.generate_random_start() for _ in range(population_size)]
+    population = [meval.generate_random_start(adversary.x_min, adversary.x_max) for _ in range(population_size)]
 
     # Initializing variables
     best_heuristic = -100
@@ -138,5 +139,5 @@ elitist_rate = 0.05
 default_survival_rate = 0.7
 default_mutation_rate = 0.2
 
-for _ in range(5):
+for _ in tqdm(range(20)):
     geneticalgorithm()

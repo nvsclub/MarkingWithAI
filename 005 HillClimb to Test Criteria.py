@@ -2,7 +2,6 @@ import lib.marking_evaluation as meval
 import copy
 
 from time import time, asctime
-from tqdm import tqdm
 import pandas as pd
 
 # Lists all the sucessors of a team proposal
@@ -111,13 +110,20 @@ def hillclimb():
 
     # Export registers to CSV
     export_time = asctime().replace(':','').replace(' ','')
-    pd.DataFrame(register).to_csv(f'results/hillclimb_da{export_time}.csv', index=False)
-
-    print(counter)
+    pd.DataFrame(register).to_csv(f'results/hillclimb_criteria_{adversary.w1}{adversary.w2}{adversary.w3}{adversary.w4}_da{export_time}.csv', index=False)
 
 # Define adversary
 adversary = meval.default_adversary_1
 
-# Run algorithm multiple times
-for _ in tqdm(range(20)):
-    hillclimb()
+# Run algorithm for multiple criteria weights
+adversary.initialize_heuristic(weights={'w1':1, 'w2':0, 'w3':0, 'w4':0})
+hillclimb()
+
+adversary.initialize_heuristic(weights={'w1':0, 'w2':1, 'w3':0, 'w4':0})
+hillclimb()
+
+adversary.initialize_heuristic(weights={'w1':0, 'w2':0, 'w3':1, 'w4':0})
+hillclimb()
+
+adversary.initialize_heuristic(weights={'w1':0, 'w2':0, 'w3':0, 'w4':1})
+hillclimb()
