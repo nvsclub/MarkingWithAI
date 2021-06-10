@@ -119,10 +119,11 @@ class Team:
         return self.w1 * c1 + self.w2 * c2 + self.w3 * c3 + self.w4 * c4 + (self.w1 + self.w2 + self.w3 + self.w4) * c5
 
     def validate_positions(self, proposed_team):
+        infractions_counter = 0
         for player in proposed_team.players:
             if (player.x < 15.72) and (20.37 < player.y < 79.63):
-                return -1
-        return 0
+                infractions_counter -= 1
+        return infractions_counter
 
 
     ## Definition:
