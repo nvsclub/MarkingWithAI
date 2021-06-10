@@ -196,10 +196,10 @@ class Team:
         clf = KNeighborsClassifier(n_neighbors=1)
         clf.fit(df[['x', 'y']], df.team)
         pred = clf.predict(pd.DataFrame([[i, j/(120/75)] for i in range(101) for j in range(101)], columns=['x','y']))
-        pred = pred * np.array([min(max(i, self.x_min), self.x_max) for i in range(101) for _ in range(101)])
+        pred = pred * np.array([2 if i > (self.x_max-5) else 1 for i in range(101) for _ in range(101)])
 
         # Dividing by the pitch control of a 4-4-2 vs 4-4-2
-        return pred.sum() / 305155
+        return pred.sum() / 7305
 
     def plot_team(self, dpi=120):
         draw.pitch(dpi = dpi)
