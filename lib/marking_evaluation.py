@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import lib.draw as draw
+# import lib.draw as draw
 from sklearn.neighbors import KNeighborsClassifier
 from random import random, randint
 
@@ -96,7 +96,7 @@ class Team:
    
     def calculate_random_player_limits(self):
         xxs = [player.x for player in self.players]
-        self.x_min = max(0, min(xxs) - 5)
+        self.x_min = max(1, min(xxs) - 5)
         self.x_max = min(100, max(xxs) + 5)
     
     # mad -> maximum allowed distance
@@ -196,9 +196,10 @@ class Team:
         clf = KNeighborsClassifier(n_neighbors=1)
         clf.fit(df[['x', 'y']], df.team)
         pred = clf.predict(pd.DataFrame([[i, j/(120/75)] for i in range(101) for j in range(101)], columns=['x','y']))
+        pred = pred * np.array([min(max(i, self.x_min), self.x_max) for i in range(101) for _ in range(101)])
 
         # Dividing by the pitch control of a 4-4-2 vs 4-4-2
-        return pred.sum() / 4463
+        return pred.sum() / 305155
 
     def plot_team(self, dpi=120):
         draw.pitch(dpi = dpi)
@@ -309,6 +310,7 @@ default_adversary_1 = create_adversary(opposing_team)
 # o_team.add_player(50, 80)
 # o_team.add_player(70, 40)
 # o_team.add_player(70, 60)
+# o_team.calculate_random_player_limits()
 
 # d_team = Team()
 # d_team.add_player(90, 50, True)
@@ -324,6 +326,6 @@ default_adversary_1 = create_adversary(opposing_team)
 # d_team.add_player(40, 60)
 
 
-# o_team.initialize_heuristic(w1=1, w2=1, w3=1, w4=1, mad=5)
+# o_team.initialize_heuristic(weights={'w1':0, 'w2':0, 'w3':0, 'w4':1} , mad=5)
 # print(o_team.calculate_heuristic(d_team))
 # o_team.plot_result(d_team)
