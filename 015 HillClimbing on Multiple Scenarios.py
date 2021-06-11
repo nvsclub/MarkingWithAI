@@ -52,7 +52,7 @@ def hillclimb():
     register = {'iteration': [], 'proposal': [], 'fitness': [], 'cycle_time': []}
 
     # Starting from a random position
-    proposed_team = meval.generate_random_start(adversary.x_min, adversary.x_max)
+    proposed_team = [[52, 96], [53, 67], [52, 32], [51, 4], [31, 5], [32, 31], [33, 65], [32, 96], [18, 66], [17, 32]]
     best_fitness = adversary.calculate_heuristic(meval.create_team(proposed_team))
 
     # Defining step related variables

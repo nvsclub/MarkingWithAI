@@ -1,3 +1,6 @@
+#TODO Known Bug: current framework cannot calculate if vertical passline is intersected
+## because of division by 0 in linear_equation_from_2_points
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -299,7 +302,7 @@ def plot_proposed_team(adversary, current_proposal, save_fig_dir=''):
 opposing_team_1 = [[5, 39], [9, 28], [10, 72], [23, 98], [26, 1], [20, 49], [32, 27], [32, 70], [48, 97], [48, 51], [48, 3]]
 default_adversary_1 = create_adversary(opposing_team_1)
 
-opposing_team_2 = [[5, 39], [9, 7], [5, 25], [10, 64], [26, 98], [26, 2], [26, 63], [25, 29], [38, 81], [36, 16], [46, 47]]
+opposing_team_2 = [[5, 39], [9, 7], [6, 25], [10, 64], [26, 98], [26, 2], [26, 63], [25, 29], [38, 81], [36, 16], [46, 47]]
 default_adversary_2 = create_adversary(opposing_team_2)
 
 opposing_team_3 = [[5, 39], [26, 91], [22, 68], [23, 49], [29, 31], [40, 92], [35, 74], [37, 56], [43, 40], [48, 84], [46, 68]]
