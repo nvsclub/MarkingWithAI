@@ -66,6 +66,8 @@ def pitch(bg_color = '#FFFFFF', line_color = '#000000', dpi = 144):
     plt.gcf().gca().add_artist(e2)
     plt.gcf().gca().add_artist(e3)
 
+    plt.tight_layout()
+
 
 def pitch_for_animation(bg_color = '#091442', line_color = '#3562A6', dpi = 144, figsize=(10.5,6.8)):
     # Background cleanup

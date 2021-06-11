@@ -262,7 +262,7 @@ class Team:
         plt.scatter(print_df_t2['x'], print_df_t2['y'], 3, c='C1', marker='s', alpha=0.5)
 
         if save_fig_dir != '':
-            plt.savefig(save_fig_dir)
+            plt.savefig(save_fig_dir, bbox_inches='tight', dpi=dpi)
             plt.clf()
         else:
             plt.show()
@@ -296,37 +296,17 @@ def plot_proposed_team(adversary, current_proposal, save_fig_dir=''):
     adversary.plot_result(proposed_team, save_fig_dir)
 
 
-opposing_team = [[5, 39], [9, 28], [10, 72], [23, 98], [26, 1], [20, 49], [32, 27], [32, 70], [48, 97], [48, 51], [48, 3]]
-default_adversary_1 = create_adversary(opposing_team)
+opposing_team_1 = [[5, 39], [9, 28], [10, 72], [23, 98], [26, 1], [20, 49], [32, 27], [32, 70], [48, 97], [48, 51], [48, 3]]
+default_adversary_1 = create_adversary(opposing_team_1)
 
-# o_team = Team()
-# o_team.add_player(10, 50, True)
-# o_team.add_player(30, 20)
-# o_team.add_player(30, 40)
-# o_team.add_player(30, 60)
-# o_team.add_player(30, 80)
-# o_team.add_player(50, 20)
-# o_team.add_player(50, 40)
-# o_team.add_player(50, 60)
-# o_team.add_player(50, 80)
-# o_team.add_player(70, 40)
-# o_team.add_player(70, 60)
-# o_team.calculate_random_player_limits()
+opposing_team_2 = [[5, 39], [9, 7], [5, 25], [10, 64], [26, 98], [26, 2], [26, 63], [25, 29], [38, 81], [36, 16], [46, 47]]
+default_adversary_2 = create_adversary(opposing_team_2)
 
-# d_team = Team()
-# d_team.add_player(90, 50, True)
-# d_team.add_player(70, 20)
-# d_team.add_player(80, 40)
-# d_team.add_player(80, 60)
-# d_team.add_player(80, 80)
-# d_team.add_player(60, 20)
-# d_team.add_player(60, 40)
-# d_team.add_player(60, 60)
-# d_team.add_player(60, 80)
-# d_team.add_player(40, 40)
-# d_team.add_player(40, 60)
+opposing_team_3 = [[5, 39], [26, 91], [22, 68], [23, 49], [29, 31], [40, 92], [35, 74], [37, 56], [43, 40], [48, 84], [46, 68]]
+default_adversary_3 = create_adversary(opposing_team_3)
 
+opposing_team_4 = [[5, 39], [10, 30], [9, 71], [21, 98], [22, 1], [20, 49], [30, 28], [29, 63], [42, 49], [47, 78], [47, 18]]
+default_adversary_4 = create_adversary(opposing_team_4)
 
-# o_team.initialize_heuristic(weights={'w1':0, 'w2':0, 'w3':0, 'w4':1} , mad=5)
-# print(o_team.calculate_heuristic(d_team))
-# o_team.plot_result(d_team)
+opposing_team_5 = [[5, 39], [7, 26], [8, 71], [19, 1], [18, 97], [19, 36], [28, 65], [36, 85], [36, 19], [48, 60], [44, 49]]
+default_adversary_5 = create_adversary(opposing_team_5)
