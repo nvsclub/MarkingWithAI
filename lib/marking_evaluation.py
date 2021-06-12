@@ -99,11 +99,11 @@ class Team:
    
     def calculate_random_player_limits(self):
         xxs = [player.x for player in self.players]
-        self.x_min = max(1, min(xxs) - 5)
+        self.x_min = max(16, min(xxs) - 5)
         self.x_max = min(100, max(xxs) + 5)
     
     # mad -> maximum allowed distance
-    def initialize_heuristic(self, weights={'w1':1, 'w2':1, 'w3':1, 'w4':1}, mad=5):
+    def initialize_heuristic(self, weights={'w1':1, 'w2':1, 'w3':1, 'w4':4}, mad=5):
         self.w1 = weights['w1']
         self.w2 = weights['w2']
         self.w3 = weights['w3']
@@ -313,3 +313,6 @@ default_adversary_4 = create_adversary(opposing_team_4)
 
 opposing_team_5 = [[5, 39], [7, 26], [8, 71], [19, 1], [18, 97], [19, 36], [28, 65], [36, 85], [36, 19], [48, 60], [44, 49]]
 default_adversary_5 = create_adversary(opposing_team_5)
+
+formation_442 = [[52, 96], [53, 67], [52, 32], [51, 4], [31, 5], [32, 31], [33, 65], [32, 96], [18, 66], [17, 32]]
+default_442_formation = create_adversary(formation_442)
