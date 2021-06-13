@@ -18,7 +18,7 @@ def plot_team(team, save_fig_dir='', dpi=120):
     adversary.plot_result(team, save_fig_dir=save_fig_dir, dpi=dpi)
 
 for file_name in tqdm(glob('results/*.csv')):
-    file_name = file_name.replace('results/','').replace('.csv','')
+    file_name = file_name.replace('results\\','').replace('.csv','')
     res_criteria_1 = pd.read_csv(f'results/{file_name}.csv')
     video = cv2.VideoWriter(f'img/animated/{file_name}.mp4',cv2.VideoWriter_fourcc(*'MPEG'),1,(1247,803))
 
