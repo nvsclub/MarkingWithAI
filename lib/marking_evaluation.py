@@ -52,7 +52,7 @@ class PassLine:
         self.lineblocked = False
 
     # mad -> maximum allowed distance
-    def is_line_blocked(self, player, mad):
+    def is_line_blocked(self, player, mad=5):
         self.lineblocked = False
         if distance_to_line(player, self.a, self.b) <= mad:
             m, b = linear_equation_from_2_points(self.a, self.b)
